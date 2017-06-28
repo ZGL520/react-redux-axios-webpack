@@ -1,0 +1,1 @@
+export const BLOG_LOAD = 'BLOG_LOAD'
