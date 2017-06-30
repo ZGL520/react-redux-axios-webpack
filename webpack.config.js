@@ -6,7 +6,7 @@ var path = require('path')
 
 module.exports = {
   context: path.resolve(__dirname, './src'),
-  entry: {
+  entry: {  //入口文件配置
     app: './index.jsx',
     lib: [
       'react',
@@ -17,11 +17,11 @@ module.exports = {
       'redux'
     ]
   },
-  output: {
+  output: {  //出口文件配置
     path: path.join(__dirname, './dist'),
     filename: '[name].js'
   },
-  module: {
+  module: {//加载配置
     loaders: [
       {
         test: /\.less$/,
@@ -56,10 +56,10 @@ module.exports = {
     ]
   },
   resolve: {
-    alias: {
+    alias: {//模块别名定义，方便后续直接引用别名，无须多写长长的地址
       'react': path.join(__dirname, 'node_modules', 'react')
     },
-    extensions: ['', '.js', '.jsx']
+    extensions: ['', '.js', '.jsx']//自动扩展文件后缀名，意味着我们require模块可以省略不写后缀名
   },
   postcss: [
     autoprefixer({
@@ -68,13 +68,13 @@ module.exports = {
 
     })
   ],
-  plugins: [
-    new DashboardPlugin(),
-    new webpack.optimize.CommonsChunkPlugin('lib', 'lib.js'),
-    new webpack.DefinePlugin({
+  plugins: [//插件项
+    new DashboardPlugin(),//优雅的仪表盘，谁用谁知道
+    new webpack.optimize.CommonsChunkPlugin('lib', 'lib.js'),//默认会把所有入口节点的公共代码提取出来,生成一个lib.js
+    new webpack.DefinePlugin({//// 接收字符串插入到代码当中,
       'process.env': { NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'development') }
     }),
-    new HtmlWebpackPlugin({
+    new HtmlWebpackPlugin({//简化创建服务于 webpack bundle 的 HTML 文件
       template: './index.html'
     })
   ],
