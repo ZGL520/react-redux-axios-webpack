@@ -4,6 +4,8 @@ import {bindActionCreators} from 'redux'
 import {getUser} from '../../../fetch/getUser'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
 import * as bloginfoActions from '../actions/bloginfo'
+import axios from 'axios'
+import ShowData from './showbloginfo'
 
 
 class ProductList extends React.Component{
@@ -12,6 +14,7 @@ class ProductList extends React.Component{
         this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
         this.state = {
             initDone:false,
+            blog:[],
             book:[]
         };
     }
@@ -22,20 +25,20 @@ class ProductList extends React.Component{
     }
 
     render(){
-
-        const data = this.state.book
+        const data = this.state.blog
+        // console.log(this.props.bloginfo)
         return(
             <div>
                 <h1>这里是blogList</h1>
-                <div>{this.state.initDone? <div><h1>一共{this.state.book.length}条数据</h1></div>:<div>正在加载。。。</div>}</div>
+                <div>{this.state.initDone? <div><h1>一共{this.state.blog.length}条数据</h1></div>:<div>正在加载。。。</div>}</div>
 
                 {/*<div>*/}
                     {/*<BloginfoShow {this.state.book}/>*/}
                 {/*</div>*/}
-
+                {/*<ShowData {this.props.bloginfo}/>*/}
 
                 <div>
-                    {this.state.book.map((item,index) => {
+                    {this.state.blog.map((item,index) => {
                         return <div>
                                     <h2>{item.id}.{item.title}</h2>
                                     <p><img src={item.img} alt=""/></p>
@@ -54,13 +57,23 @@ class ProductList extends React.Component{
             return res.json()
         }).then(json => {
             this.setState({
-                book:json,
+                blog:json,
                 initDone:true,
-
             })
-            // console.log(this.state.book)
-
         })
+
+        // const book = axios.interceptors.request.use((config) => {
+        //     console.log("请求前拦截");
+        //     return config;
+        // },(err) => {
+        //     return Promise.reject(err)
+        // })
+
+        axios.get('http://localhost:3000/book').then((res) => {
+            console.log(res)
+        }).catch((err)=>{
+            console.log(err)
+        });
 
         const toprops = getUser('blog');
         toprops.then(res => {
@@ -69,15 +82,10 @@ class ProductList extends React.Component{
             this.props.bloginfoActions.blogload({
                 text:json
             })
-            console.log(this.props.bloginfo)
+            // console.log(this.props.bloginfo)
         })
-
     }
-
-
 }
-
-
 
 function mapStateToProps(state) {
     return {
