@@ -35,7 +35,7 @@ class ProductList extends React.Component{
                 {/*<div>*/}
                     {/*<BloginfoShow {this.state.book}/>*/}
                 {/*</div>*/}
-                {/*<ShowData {this.props.bloginfo}/>*/}
+                <ShowData/>
 
                 <div>
                     {this.state.blog.map((item,index) => {
@@ -71,14 +71,13 @@ class ProductList extends React.Component{
 
         axios.get('http://localhost:3000/book').then((res) => {
             console.log(res)
-        }).catch((err)=>{
-            console.log(err)
-        });
-
+        })
         const toprops = getUser('blog');
         toprops.then(res => {
+            // console.log(res)
             return res.json()
         }).then((json) => {
+            // console.log(json)
             this.props.bloginfoActions.blogload({
                 text:json
             })
